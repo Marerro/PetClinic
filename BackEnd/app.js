@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
 const authRouter = require('./routers/authRoutes');
+const appRouter = require('./routers/appRoutes');
 
 // create server
 const app = express();
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // here will be your routes
+app.use("/api/v1/appointments", appRouter);
 app.use("/api/v1/users", authRouter)
 
 

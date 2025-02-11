@@ -11,7 +11,7 @@ function Register () {
           const response = await postUser(data);
           console.log(response);
           if (response) {
-            navigate("/");
+            navigate("/main");
           } else {
             console.log("Registration failed");
           }
@@ -25,7 +25,7 @@ function Register () {
     return (
         <>
         <div className="text-white text-center grid items-center h-[20vh]"></div>
-<div className="mx-auto bg-violet-800 bg-opacity-80 h-[40vh] w-[20vw] border border-[#252945]">
+<div className="mx-auto bg-violet-800 h-auto p-5 w-1/4 border border-[#252945]">
   <div>
     <h1 className="text-white text-center text-[25px] pt-10">Register</h1>
 
