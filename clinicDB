@@ -1,0 +1,187 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 16.4
+-- Dumped by pg_dump version 16.4
+
+-- Started on 2025-02-11 15:30:21
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 218 (class 1259 OID 24977)
+-- Name: appointments; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.appointments (
+    id integer NOT NULL,
+    petname character varying(255) NOT NULL,
+    petowner character varying(255) NOT NULL,
+    description character varying(255) NOT NULL,
+    date date NOT NULL,
+    "time" time without time zone NOT NULL
+);
+
+
+ALTER TABLE public.appointments OWNER TO postgres;
+
+--
+-- TOC entry 217 (class 1259 OID 24976)
+-- Name: appointments_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.appointments_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.appointments_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4851 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: appointments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.appointments_id_seq OWNED BY public.appointments.id;
+
+
+--
+-- TOC entry 216 (class 1259 OID 24968)
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.users (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    email character varying(255) NOT NULL,
+    password character varying(255) NOT NULL,
+    roles character varying(150)
+);
+
+
+ALTER TABLE public.users OWNER TO postgres;
+
+--
+-- TOC entry 215 (class 1259 OID 24967)
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.users_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.users_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4852 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- TOC entry 4694 (class 2604 OID 24980)
+-- Name: appointments id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.appointments ALTER COLUMN id SET DEFAULT nextval('public.appointments_id_seq'::regclass);
+
+
+--
+-- TOC entry 4693 (class 2604 OID 24971)
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- TOC entry 4845 (class 0 OID 24977)
+-- Dependencies: 218
+-- Data for Name: appointments; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 4843 (class 0 OID 24968)
+-- Dependencies: 216
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.users (id, name, email, password, roles) VALUES (1, 'Jonas', 'test@gmail.com', '$argon2id$v=19$m=65536,t=3,p=4$DOpVTUP95itkDfF8Ca4bIA$2E0XPN223nnTJs+2eCDxD0tcqBfmLRpjKWUi+519Nbs', 'user');
+INSERT INTO public.users (id, name, email, password, roles) VALUES (2, 'Jonas', 'test@gmail.com', '$argon2id$v=19$m=65536,t=3,p=4$YFKRelAlyzs0Zl2iJk599A$8ZT32ZwIaMBFvGfSCHOg+VHUyPMu/fMfm+goxA9l8lA', 'user');
+INSERT INTO public.users (id, name, email, password, roles) VALUES (3, 'Jonas', 'test@gmail.com', '$argon2id$v=19$m=65536,t=3,p=4$/bGhgRQ/J0LYUXseNsFznA$Xqq4UkPQ0E1t4Dk7dlx04/Cc7LodovldO/lU63uZ+LQ', 'user');
+INSERT INTO public.users (id, name, email, password, roles) VALUES (4, 'Jonas', 'vartotojas@gmail.com', '$argon2id$v=19$m=65536,t=3,p=4$FAVo6BdTsnii07//q/VB+Q$8vzeEOmzPaUcd20MPYQkFzxEmibjd5sAv0FsHVSn2/s', 'user');
+INSERT INTO public.users (id, name, email, password, roles) VALUES (5, 'Jonas', 'vartotojas@gmail.com', '$argon2id$v=19$m=65536,t=3,p=4$BAZgUeNuM+9snuWwS0agLQ$2wjVvUdu+LlTuUdpYZ0QsCVOO2L+NWropykbf8mr4/M', 'user');
+INSERT INTO public.users (id, name, email, password, roles) VALUES (6, 'Jonas', 'vartotojas@gmail.com', '$argon2id$v=19$m=65536,t=3,p=4$QOKw6SdUsi8sBPsMCdwJ8g$MfX8ixUcdQ0y6293eeTokq+iiEtsyzumuDx+j154CGs', 'user');
+
+
+--
+-- TOC entry 4853 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: appointments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.appointments_id_seq', 1, false);
+
+
+--
+-- TOC entry 4854 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 6, true);
+
+
+--
+-- TOC entry 4698 (class 2606 OID 24984)
+-- Name: appointments appointments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.appointments
+    ADD CONSTRAINT appointments_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4696 (class 2606 OID 24975)
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+-- Completed on 2025-02-11 15:30:21
+
+--
+-- PostgreSQL database dump complete
+--
+
