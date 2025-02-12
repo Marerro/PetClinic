@@ -19,14 +19,14 @@ function AppointmentList() {
   }, [appointments]);
 
   const renderAppointments = () => {
-    return appointments.map((app) => {
+    return appointments.map((app, index, arr) => {
       const { id, petname, petowner, description, date, time } = app;
 
 
       return (
         <div
           key={id}
-          className={isOpen ? "card-opened" : "card-closed"}
+          className={`card ${isOpen ? "card-opened" : "card-closed"} ${index === arr.length - 1 ? "pb-[8vh]" : ""}`}
         >
           <div className="flex gap-2 items-center w-full pb-2">
             <div>Here will be icons</div>
@@ -37,7 +37,7 @@ function AppointmentList() {
               <p className="text-[18px]">{description}</p>
             </div>
 
-            <div className="w-full">
+            <div className="w-full ">
               {/* right side of List */}
                 <p className="text-right">{date} {time}</p>
             </div>

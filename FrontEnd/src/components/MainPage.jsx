@@ -4,6 +4,7 @@ import Header from "./Header";
 import AddAppointment from "./AddAppointment";
 import SearchBar from "./SearchBar";
 import AppointmentList from "./AppointmentList";
+import Footer from "./Footer";
 
 function MainPage() {
     const { isOpen, setIsOpen } = useContext(ModalContext); 
@@ -14,6 +15,7 @@ function MainPage() {
             <AddAppointment />
             <SearchBar />
             <AppointmentList />
+            <Footer />
         </>
     );
 }

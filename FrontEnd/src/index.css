@@ -27,7 +27,7 @@
         @apply
         max-w-[67rem]
         mx-auto
-        mt-[5vh]
+        mt-[3vh]
         h-auto
         flex 
         justify-between
@@ -52,4 +52,5 @@
         justify-center
         mt-[40.2vh]
     }
+    
 }
