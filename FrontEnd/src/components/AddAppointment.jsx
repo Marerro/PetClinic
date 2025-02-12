@@ -3,6 +3,7 @@ import { useState } from "react";
 import Modal from "../../utils/Modal";
 import { useForm } from "react-hook-form";
 import { TiPlus } from "react-icons/ti";
+import {postAppointment} from "../helpers/post";
 
 function AddAppointment() {
   const { register, handleSubmit } = useForm();
@@ -12,7 +13,17 @@ function AddAppointment() {
     setIsOpen((prev) => !prev);
   };
 
-  const onSubmit = () => {};
+  const onSubmit = async (data) => {
+    if(!data) {
+      console.log("missing data")
+    }
+    const response = await postAppointment(data)
+    if (response) {
+      setIsOpen(false);
+    } else {
+      console.log("Appointment creation failed");
+    }
+  };
 
   return (
     <>
@@ -31,7 +42,7 @@ function AddAppointment() {
               Name
             </label>
             <input
-              {...register("name")}
+              {...register("petname")}
               type="text"
               placeholder="Name"
               className="w-full h-[3.5vh] text-black border rounded px-2"
@@ -79,7 +90,7 @@ function AddAppointment() {
               Apt. Notes
             </label>
             <textarea
-              {...register("notes")}
+              {...register("description")}
               placeholder="Appointment Notes"
               className="w-full h-[10vh] text-black border rounded px-2"
             />
