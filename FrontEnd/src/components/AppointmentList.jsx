@@ -18,8 +18,6 @@ function AppointmentList() {
     return appointments.map((app) => {
       const { id, petname, petowner, description, date, time } = app;
 
-        
-
 
       return (
         <div
