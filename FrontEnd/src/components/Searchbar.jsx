@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { getAllAppointments } from "../helpers/get.js";
+import { useContext } from "react";
+import ModalContext from "../context/ModalContext.jsx"
 
 function searchBar() {
+    const { isOpen, setIsOpen } = useContext(ModalContext);
     const [filter, setFilter] = useState([]);
 
 
   return (
     <>
-      <div className="max-w-[67rem] mx-auto flex justify-center pt-5">
+      <div className={isOpen ? "filter-open" : "filter-closed"}>
         <div className="">
           <input type="text" className="w-[450px] rounded-l-lg"></input>
         </div>

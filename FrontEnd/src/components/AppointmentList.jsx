@@ -2,9 +2,13 @@ import react from "react";
 import { useState, useEffect } from "react";
 import { getAllAppointments } from "../helpers/get.js";
 import { set } from "react-hook-form";
+import { useContext } from "react";
+import ModalContext from "../context/ModalContext"
+import "../index.css"
 
 function AppointmentList() {
   const [appointments, setAppointments] = useState([]);
+  const {isOpen, setIsOpen} = useContext(ModalContext);
 
   useEffect(() => {
     const getAppointments = async () => {
@@ -22,7 +26,7 @@ function AppointmentList() {
       return (
         <div
           key={id}
-          className="max-w-[67rem] mx-auto mt-5 h-auto flex justify-between border-b-2 border-indigo-500"
+          className={isOpen ? "card-opened" : "card-closed"}
         >
           <div className="flex gap-2 items-center w-full pb-2">
             <div>Here will be icons</div>
@@ -46,7 +50,7 @@ function AppointmentList() {
 
   return (
     <>
-      <div>{renderAppointments()}</div>
+          {renderAppointments()}
     </>
   );
 }

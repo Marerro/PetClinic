@@ -1,7 +1,10 @@
 import react from "react";
-import "../src/modal.css"
+import "../modal.css"
+import ModalContext from "../context/ModalContext"
+import { useContext } from "react";
 
-const Modal = ({isOpen, setIsOpen, children }) => {
+const Modal = ({ children }) => {
+    const {isOpen} = useContext(ModalContext);
     if(!isOpen) return null
 
     return (
@@ -14,7 +17,7 @@ const Modal = ({isOpen, setIsOpen, children }) => {
             }}
             className="modal-content"
               >
-                {children}  
+                  {children}
             </div>
         </div>
     )

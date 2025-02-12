@@ -1,13 +1,15 @@
 import react from "react";
 import { useState } from "react";
-import Modal from "../../utils/Modal";
+import Modal from "../utils/Modal";
 import { useForm } from "react-hook-form";
 import { TiPlus } from "react-icons/ti";
 import {postAppointment} from "../helpers/post";
+import ModalContext from "../context/ModalContext"
+import { useContext } from "react";
 
 function AddAppointment() {
   const { register, handleSubmit } = useForm();
-  const [isOpen, setIsOpen] = useState(false);
+  const {isOpen, setIsOpen} = useContext(ModalContext);
 
   const handleModal = () => {
     setIsOpen((prev) => !prev);

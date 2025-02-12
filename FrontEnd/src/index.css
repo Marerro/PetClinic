@@ -11,5 +11,45 @@
 }
 
 @layer components {
+    .card-closed {
+        @apply
+        max-w-[67rem]
+        mx-auto
+        mt-5 
+        h-auto
+        flex 
+        justify-between
+        border-b-2
+        border-indigo-500
+    }
 
+    .card-opened {
+        @apply
+        max-w-[67rem]
+        mx-auto
+        mt-[5vh]
+        h-auto
+        flex 
+        justify-between
+        border-b-2
+        border-indigo-500
+    }
+
+    .filter-closed {
+        @apply
+        max-w-[67rem]
+        mx-auto
+        flex
+        justify-center
+        pt-5
+    }
+
+    .filter-open {
+        @apply
+        max-w-[67rem]
+        mx-auto
+        flex
+        justify-center
+        mt-[40.2vh]
+    }
 }
