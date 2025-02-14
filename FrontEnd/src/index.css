@@ -35,9 +35,9 @@
         border-indigo-500
     }
 
+    /* if Appointment modal is opened/closed move the search bar */ 
     .filter-closed {
         @apply
-        max-w-[67rem]
         mx-auto
         flex
         justify-center

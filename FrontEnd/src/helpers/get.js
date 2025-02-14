@@ -5,3 +5,9 @@ export const getAllAppointments = async () => {
     const response = await axios.get(`${appAPI}/appointment`)
     return response.data;
 }
+
+export const getFilteredAppointments = async (data) => {
+    const response = await axios.get(`${appAPI}/?search=${data}`);    
+    console.log(response);
+    return response.data;
+}

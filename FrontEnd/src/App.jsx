@@ -4,6 +4,8 @@ import { Route, Routes , Navigate} from "react-router";
 import MainPage from "./components/MainPage";
 import ModalContext from "./context/ModalContext";
 import searchContext from "./context/searchContext";
+import SearchBar from "./components/SearchBar";
+import AppointmentList from "./components/AppointmentList";
 
 function App() {
   const [isOpen, setIsOpen] = useState(false)

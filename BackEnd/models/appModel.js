@@ -16,3 +16,14 @@ exports.getAppointments = () => {
     `
     return allAppointments
 }
+
+exports.filterAppointments = (query) => {
+    const filterAppointments = sql`
+    SELECT id, petname, petowner, description, date, time
+    FROM appointments
+    WHERE petname ILIKE ${query + '%' }
+    OR petowner ILIKE ${query + '%' }
+    OR description ILIKE ${query + '%' }
+    `
+    return filterAppointments
+}  
