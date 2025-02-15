@@ -1,7 +1,7 @@
 const { validationResult } = require('express-validator');
 const AppError = require('../utils/appError');
 
-exports.ValidateError = (req, res, next) => {
+const validate = (req, res, next) => {
     try {
         const errors = validationResult(req);
 
@@ -19,3 +19,5 @@ exports.ValidateError = (req, res, next) => {
         next(error); // Passing error to the error-handling middleware
     }
 };
+
+module.exports = validate;

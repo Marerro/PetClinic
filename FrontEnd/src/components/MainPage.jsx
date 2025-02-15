@@ -11,13 +11,15 @@ function MainPage() {
     const { isOpen, setIsOpen } = useContext(ModalContext); 
     const [query, setQuery] = useState("");
     const [filteredAppointments, setFilteredAppointments] = useState([]);
+    const [select, setSelected] = useState(null);
+    const [order, setOrder] = useState(null);
 
     return (
         <>
             <Header />
             <AddAppointment />
-            <SearchBar query={query} setQuery={setQuery} setFilteredAppointments={setFilteredAppointments} />
-            <AppointmentList query={query} filteredAppointments={filteredAppointments} />
+            <SearchBar select={select} setSelected={setSelected} setOrder={setOrder} order={order} query={query} setQuery={setQuery} setFilteredAppointments={setFilteredAppointments} />
+            <AppointmentList query={query} select={select} order={order} filteredAppointments={filteredAppointments} />
             <Footer />
         </>
     );

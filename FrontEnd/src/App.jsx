@@ -6,6 +6,8 @@ import ModalContext from "./context/ModalContext";
 import searchContext from "./context/searchContext";
 import SearchBar from "./components/SearchBar";
 import AppointmentList from "./components/AppointmentList";
+import Login from "./components/LoginForm"; 
+import UserContextProvider from "./context/UserContextProvider.jsx";
 
 function App() {
   const [isOpen, setIsOpen] = useState(false)
@@ -14,15 +16,18 @@ function App() {
 
   return (
     <>
+  <UserContextProvider>
     <ModalContext.Provider value={{isOpen, setIsOpen}}>
     <searchContext.Provider value={{select, setSelected}}>
     <Routes>
     <Route path="/" element={<Navigate to="/register" />} />
+    <Route path={"/login"} element={<Login />} />
     <Route path={"/register"} element={<Register />} />
     <Route path={"/main"} element={<MainPage />} />
     </Routes>
     </searchContext.Provider>
     </ModalContext.Provider>
+    </UserContextProvider>
     </>
   );
 }

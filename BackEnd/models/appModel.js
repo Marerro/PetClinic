@@ -17,13 +17,25 @@ exports.getAppointments = () => {
     return allAppointments
 }
 
-exports.filterAppointments = (query) => {
+exports.filterAppointments = (query, sort, order) => {
+    const sortColumns = ['petname', 'date', 'petowner'];
+    const orderColumns = ['ASC', 'DESC'];
+
+    const sorted = sortColumns.includes(sort)
+    ? sort
+    : 'petname';
+
+    const sortedOrder = orderColumns.includes(order)
+    ? order
+    : 'DESC';
+
     const filterAppointments = sql`
     SELECT id, petname, petowner, description, date, time
     FROM appointments
-    WHERE petname ILIKE ${query + '%' }
-    OR petowner ILIKE ${query + '%' }
-    OR description ILIKE ${query + '%' }
-    `
+    WHERE petname ILIKE ${query + '%'}
+      OR petowner ILIKE ${query + '%'}
+      OR description ILIKE ${query + '%'}
+    ORDER BY ${sql.unsafe(sorted)} ${sql.unsafe(sortedOrder)}
+  `;
     return filterAppointments
 }  

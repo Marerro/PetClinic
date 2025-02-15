@@ -8,6 +8,11 @@ export const postUser = async (data) => {
     return response.data;
 }
 
+export const postLogin = async (data) => {
+    const response = await axios.post(`${usersAPI}/login`, data, {withCredentials: true});
+    return response.data;
+}
+
 export const postAppointment = async (data) => {
     const response = await axios.post(`${appAPI}/appointment`, data);
     console.log(data);

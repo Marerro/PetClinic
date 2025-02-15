@@ -34,11 +34,11 @@ class appController {
 
     filterAppointments = async (req, res, next) => {
         try {
-            const query = req.query.search
+            const { search, sort, order } = req.query
 
-            console.log(query)
+            console.log(sort)
 
-            const response = await filterAppointments(query);
+            const response = await filterAppointments(search, sort, order);
 
             console.log(response);
 

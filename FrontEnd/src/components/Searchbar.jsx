@@ -5,25 +5,25 @@ import ModalContext from "../context/ModalContext.jsx";
 import searchContext from "../context/searchContext.jsx";
 import AppointmentList from "./AppointmentList.jsx";
 
-function SearchBar({query, setQuery, setFilteredAppointments}) {
-  const { select, setSelected } = useContext(searchContext);
+function SearchBar({query, setQuery, setFilteredAppointments, setSelected, select, setOrder, order}) {
   const { isOpen, setIsOpen } = useContext(ModalContext);
 
   useEffect(() => {
     if (query === "") return setFilteredAppointments([]);
     const filterAppointments = async () => {
-      const response = await getFilteredAppointments(query);
+      const response = await getFilteredAppointments(query, select, order);
       setFilteredAppointments(response.data);
     };
     filterAppointments();
-  }, [query, setFilteredAppointments]);
+  }, [query, select, order]);
 
-  const handleFilter = (value) => {
-    setSelected(value);
-    console.log(value);
+  const handleSortAndOrder = (value) => {
+    if (value === "ASC" || value === "DESC") {
+      setOrder(value);
+    } else {
+      setSelected(value);
+    }
   };
-
-  useEffect(() => {}, [select]);
 
   return (
     <>
@@ -36,18 +36,18 @@ function SearchBar({query, setQuery, setFilteredAppointments}) {
           ></input>
         </div>
         <div className="">
-          <select onChange={(e) => handleFilter(e.target.value)} className="">
+          <select onChange={(e) => handleSortAndOrder(e.target.value)} className="">
             <option disabled selected>
               Sort by:
             </option>
-            <option value={"petname"}>Pet name</option>
-            <option value={"date"}>Date</option>
-            <option value={"owner"}>Owner</option>
+            <option  value={"petname"}>Pet name</option>
+            <option  value={"date"}>Date</option>
+            <option  value={"owner"}>Owner</option>
             <hr className="full"></hr>
+
             <option value={"asc"}>ASC</option>
             <option value={"desc"}>DESC</option>
-            <p>{select}</p>
-          </select>
+            </select>
         </div>
       </div>
         </>
