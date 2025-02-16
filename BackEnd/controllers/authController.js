@@ -4,23 +4,23 @@ const jwt = require('jsonwebtoken');
 const AppError = require('../utils/appError');
 
 class authController {
+
   signToken = (id) => {
     const token = jwt.sign({ id }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRES_IN || "7d", // Jei aplinkoje nėra nustatyta
+      expiresIn: process.env.JWT_EXPIRES_IN,
     });
-
     return token;
-};
+  };
 
       sendCookie = (token, res) => {
         const cookieOptions = {
           expires: new Date(
             Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
           ),
-          httpOnly: true, // for security
+          httpOnly: true, 
         };
     
-        res.cookie("jwt", token, cookieOptions); // send cookie
+        res.cookie("jwt", token, cookieOptions); 
       };
 
       signUp = async (req, res, next) => {

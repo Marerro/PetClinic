@@ -91,12 +91,10 @@ function Register() {
                 </button>
               </div>
               <p className="text-white text-center text-[19px] font-[200]">
-                Already have account?{" "}
+                Already have account?
                 <Link to="/login">
-                  {" "}
                   <span className="text-center text-blue-300 font-[200] text-[16px]">
-                    {" "}
-                    Log in now{" "}
+                    Log in now
                   </span>
                 </Link>
               </p>

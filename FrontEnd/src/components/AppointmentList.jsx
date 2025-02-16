@@ -1,99 +1,99 @@
-import { useState, useEffect, useContext } from "react";
-import { getAllAppointments } from "../helpers/get.js";
-import ModalContext from "../context/ModalContext";
-import UserContext from "../context/UserContext.jsx";
-import "../index.css";
+import { useContext, useState } from "react";
+import AppointmentContext from "../context/AppointmentContext";
+import EditAppointmentModal from "./EditAppointmentModal";
+import SearchBar from "./SearchBar";
+import UserContext from "../context/UserContext";
 
-function AppointmentList({ query, filteredAppointments }) {
-  const [appointments, setAppointments] = useState([]);
-  const { isOpen } = useContext(ModalContext);
-  const { user } = useContext(UserContext);
+function AppointmentList() {
+  const { appointments } = useContext(AppointmentContext);
+  const { user, loading } = useContext(UserContext);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const [filteredAppointments, setFilteredAppointments] = useState([]);
+  const [query, setQuery] = useState("");
+  const [select, setSelected] = useState("petname");
+  const [order, setOrder] = useState("asc");
 
-  console.log("Current user:", user); 
+  if (!appointments || appointments.length === 0) {
+    return <p className="text-gray-500">No appointments available.</p>;
+  }
 
-  useEffect(() => {
-    const getAppointments = async () => {
-      try {
-        const response = await getAllAppointments();
-        if (response?.data) {
-          setAppointments(response.data);
-        } else {
-          console.error("API response is empty:", response);
-        }
-      } catch (error) {
-        console.error("Error fetching appointments:", error);
-      }
-    };
-    getAppointments();
-  }, []); 
+  if (loading) {
+    return <p className="text-center">Loading...</p>;
+  }
 
-  const isAdmin = user?.data.roles === "admin"; 
+  if(!user) {
+    return <p>Please log in</p>
+  }
+
+  const isAdmin = user.roles.includes("admin"); 
+  const loggedInUser = user.id
 
   const renderAppointments = () => {
-    if (!isAdmin) return null;
-
-    return appointments.map((app, index, arr) => {
-      const { id, petname, petowner, description, date, time } = app;
-
+    const userAppointments = isAdmin
+    ? appointments
+    : appointments.filter((appointment) => appointment.user_id === loggedInUser);
+  
+    const displayedAppointments = query ? filteredAppointments : userAppointments;
+  
+    return displayedAppointments.map((appointment, index, arr) => {
+      const { id, petname, petowner, description, date, time } = appointment;
+  
       return (
         <div
           key={id}
-          className={`card ${isOpen ? "card-opened" : "card-closed"} ${
-            index === arr.length - 1 ? "pb-[8vh]" : ""
-          }`}
+          className={`card max-w-[67rem] mx-auto mt-5 h-auto flex justify-between border-b-2 border-indigo-500 ${
+            index === arr.length - 1 ? "border-none" : ""
+          } `}
         >
-          <div className="flex gap-2 items-center w-full pb-2">
-            <div>Here will be icons</div>
-
-            {/* left side of List */}
+          {/* left side */}
+          <div className="flex items-center gap-4 w-4/6">
+            <button
+              className="px-5 py-1 bg-blue-500 text-white rounded"
+              onClick={() => setSelectedAppointment(appointment)}
+            >
+              Edit
+            </button>
+  
             <div className="flex flex-col w-full">
-              <p className="text-violet-800 text-[25px]">{petname}</p>
-              <p className="text-[18px]">
-                <span className="text-gray-600 text-[18px]">Owner:</span> {petowner}
+              <p className="text-violet-800 text-2xl font-bold">{petname}</p>
+              <p className="text-lg">
+                <span className="text-gray-600">Owner: </span> {petowner}
               </p>
-              <p className="text-[18px]">{description}</p>
+              <p className="text-md text-gray-700">{description}</p>
             </div>
-
-            {/* right side of List */}
-            <div className="w-full ">
-              <p className="text-right">{date} {time}</p>
-            </div>
+          </div>
+  
+          {/* right side */}
+          <div className="w-2/6 text-right text-gray-700">
+            <p className="text-center">{date} {time}</p>
           </div>
         </div>
       );
     });
   };
 
-  const renderFilteredAppointments = () => {
-    if (!query || !isAdmin) return null;
-    if (!filteredAppointments?.length) return null;
+  return (
+    <div>
+      <SearchBar
+        query={query}
+        setQuery={setQuery}
+        setFilteredAppointments={setFilteredAppointments}
+        select={select}
+        setSelected={setSelected}
+        order={order}
+        setOrder={setOrder}
+      />
 
-    return filteredAppointments.map((filter, index, arr) => (
-      <div
-        key={filter.id}
-        className={`${
-          index === arr.length - 1 ? "pb-[8vh] border-b-0" : ""
-        } max-w-[67rem] mx-auto mt-[3vh] h-auto justify-between border-b-2 border-indigo-500`}
-      >
-        <div className="flex gap-2 items-center w-full pb-2">
-          <div className="flex flex-col w-full">
-            <p className="text-violet-800 text-[25px]">{filter.petname}</p>
-            <p>
-              <span>Owner:</span> {filter.petowner}
-            </p>
-            <p>{filter.description}</p>
-          </div>
-          <div className="w-full">
-            <p className="text-right">
-              {filter.date} {filter.time}
-            </p>
-          </div>
-        </div>
-      </div>
-    ));
-  };
+      {renderAppointments()}
 
-  return <>{query ? renderFilteredAppointments() : renderAppointments()}</>;
+      {selectedAppointment && (
+        <EditAppointmentModal
+          appointment={selectedAppointment}
+          onClose={() => setSelectedAppointment(null)}
+        />
+      )}
+    </div>
+  );
 }
 
 export default AppointmentList;

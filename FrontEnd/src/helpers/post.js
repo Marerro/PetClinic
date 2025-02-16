@@ -14,7 +14,9 @@ export const postLogin = async (data) => {
 }
 
 export const postAppointment = async (data) => {
-    const response = await axios.post(`${appAPI}/appointment`, data);
+    const response = await axios.post(`${appAPI}/appointment`, data, {
+        withCredentials: true
+    });
     console.log(data);
     return response.data;
 }

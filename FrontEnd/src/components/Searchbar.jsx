@@ -3,7 +3,6 @@ import { getFilteredAppointments } from "../helpers/get.js";
 import { useContext } from "react";
 import ModalContext from "../context/ModalContext.jsx";
 import searchContext from "../context/searchContext.jsx";
-import AppointmentList from "./AppointmentList.jsx";
 
 function SearchBar({query, setQuery, setFilteredAppointments, setSelected, select, setOrder, order}) {
   const { isOpen, setIsOpen } = useContext(ModalContext);

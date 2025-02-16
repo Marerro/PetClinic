@@ -1,40 +1,52 @@
-import react from "react";
-import { useState } from "react";
+import { useContext } from "react";
 import Modal from "../utils/Modal";
 import { useForm } from "react-hook-form";
 import { TiPlus } from "react-icons/ti";
-import {postAppointment} from "../helpers/post";
-import ModalContext from "../context/ModalContext"
-import { useContext } from "react";
+import { postAppointment } from "../helpers/post";
+import ModalContext from "../context/ModalContext";
+import AppointmentContext from "../context/AppointmentContext";
+import UserContext from "../context/UserContext";
 
 function AddAppointment() {
-  const { register, handleSubmit } = useForm();
-  const {isOpen, setIsOpen} = useContext(ModalContext);
+  const { register, handleSubmit, reset } = useForm();
+  const { isOpen, setIsOpen } = useContext(ModalContext);
+  const { user, loading } = useContext(UserContext);  
+  const { setAppointments } = useContext(AppointmentContext);
 
   const handleModal = () => {
-    setIsOpen((prev) => !prev);
+    setIsOpen(prev => !prev);
   };
 
   const onSubmit = async (data) => {
-    if(!data) {
-      console.log("missing data")
-    }
-    const response = await postAppointment(data)
-    if (response) {
-      setIsOpen(false);
-    } else {
-      console.log("Appointment creation failed");
+    try {
+      const newAppointment = {
+        ...data,
+        user_id: user.id, 
+      };
+
+      const response = await postAppointment(newAppointment);
+
+      if (response?.data) {
+        setAppointments(prevAppointments => [...prevAppointments, response.data]);
+
+        setIsOpen(false); 
+      }
+    } catch (error) {
+      console.error("appointment not added", error);
     }
   };
 
+  if (loading) return <p>Loading...</p>;; 
+
   return (
     <>
-
       <div
         onClick={handleModal}
         className="bg-violet-800 max-w-[67rem] mx-auto mt-5 h-[5vh] flex justify-center items-center cursor-pointer rounded-t-[10px] relative z-50"
       >
-        <div className="text-white flex items-center"><TiPlus className="text-[25px]"/> Add Appointment</div>
+        <div className="text-white flex items-center">
+          <TiPlus className="text-[25px]" /> Add Appointment
+        </div>
       </div>
 
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
