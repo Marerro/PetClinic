@@ -30,36 +30,52 @@ exports.filterAppointments = (query, sort, order) => {
     SELECT id, petname, petowner, description, date, time
     FROM appointments
     WHERE petname ILIKE ${query + "%"}
-      OR petowner ILIKE ${query + "%"}
-      OR description ILIKE ${query + "%"}
+    OR petowner ILIKE ${query + "%"}
+    OR description ILIKE ${query + "%"}
     ORDER BY ${sql.unsafe(sorted)} ${sql.unsafe(sortedOrder)}
   `;
   return filterAppointments;
 };
 
 exports.updateAppointment = async (updatedAppointment, isAdmin = false) => {
-  const columns = Object.keys(updatedAppointment)
+  const columns = Object.keys(updatedAppointment);
 
   let query;
 
   if (isAdmin) {
-      query = sql`
-          UPDATE appointments
-          SET ${sql(updatedAppointment, ...columns)}
-          WHERE id = ${updatedAppointment.id}
-          RETURNING *;
+    query = sql`
+    UPDATE appointments
+    SET ${sql(updatedAppointment, ...columns)}
+    WHERE id = ${updatedAppointment.id}
+    RETURNING *;
       `;
   } else {
-      query = sql`
-          UPDATE appointments
-          SET ${sql(updatedAppointment, ...columns)}
-          WHERE id = ${updatedAppointment.id} AND user_id = ${updatedAppointment.user_id}
-          RETURNING *;
+    query = sql`
+    UPDATE appointments
+    SET ${sql(updatedAppointment, ...columns)}
+    WHERE id = ${updatedAppointment.id} AND user_id = ${updatedAppointment.user_id}
+    RETURNING *;
       `;
   }
   const [appointment] = await query;
 
   return appointment;
+}
+exports.deleteAppointment = async (updatedData, isAdmin = false) => {
+  if (isAdmin) {
+      const appointment = await sql`
+      DELETE FROM appointments
+      WHERE id = ${updatedData.id}
+      RETURNING *;
+      `;
+      return appointment[0];
+  } else {
+      const appointment = await sql`
+      DELETE FROM appointments
+      WHERE id = ${updatedData.id} AND user_id = ${updatedData.user_id}
+      RETURNING *;
+      `;
+      return appointment[0];
+  }
 };
-
 

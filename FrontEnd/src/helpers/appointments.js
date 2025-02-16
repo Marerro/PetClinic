@@ -8,3 +8,10 @@ export const updateAppointment = async (id, data) => {
     });
     return response.data;
 }
+
+export const deleteAppointment = async (id) => {
+    const response = await axios.delete(`${appAPI}/${id}`, {
+        withCredentials: true
+    });
+    return response.data;
+}

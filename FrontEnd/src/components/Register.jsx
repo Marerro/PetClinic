@@ -2,14 +2,19 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { Link } from "react-router";
 import { postUser } from "../helpers/post";
+import UserContext from "../context/UserContext";
+import {useContext} from "react"
+
 function Register() {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
+  const { getUser } = useContext(UserContext);
 
   const onSubmit = async (data) => {
     try {
       const response = await postUser(data);
       console.log(response);
+      await getUser();
       if (response) {
         navigate("/main");
       } else {

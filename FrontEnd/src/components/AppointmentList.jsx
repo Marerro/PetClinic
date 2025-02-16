@@ -3,9 +3,10 @@ import AppointmentContext from "../context/AppointmentContext";
 import EditAppointmentModal from "./EditAppointmentModal";
 import SearchBar from "./SearchBar";
 import UserContext from "../context/UserContext";
+import {deleteAppointment} from "../helpers/appointments"
 
 function AppointmentList() {
-  const { appointments } = useContext(AppointmentContext);
+  const { appointments, setAppointments } = useContext(AppointmentContext);
   const { user, loading } = useContext(UserContext);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [filteredAppointments, setFilteredAppointments] = useState([]);
@@ -28,6 +29,17 @@ function AppointmentList() {
   const isAdmin = user.roles.includes("admin"); 
   const loggedInUser = user.id
 
+  const handleDelete = async (id) => {
+    try {
+      const response = await deleteAppointment(id);
+      if(response) {
+        setAppointments(prevAppointments => prevAppointments.filter(app => app.id !== id))
+      }
+    } catch (error) {
+      console.error("delete failed", error);
+    }
+  }
+
   const renderAppointments = () => {
     const userAppointments = isAdmin
     ? appointments
@@ -47,12 +59,21 @@ function AppointmentList() {
         >
           {/* left side */}
           <div className="flex items-center gap-4 w-4/6">
-            <button
+          <div className="flex flex-col gap-3">
+          <button
               className="px-5 py-1 bg-blue-500 text-white rounded"
               onClick={() => setSelectedAppointment(appointment)}
             >
               Edit
             </button>
+
+            <button
+            className="px-5 py-1 bg-blue-500 text-white rounded"
+            onClick={() => handleDelete(id)}
+            >
+              Delete
+            </button>
+          </div>
   
             <div className="flex flex-col w-full">
               <p className="text-violet-800 text-2xl font-bold">{petname}</p>

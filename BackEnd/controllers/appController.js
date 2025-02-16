@@ -1,4 +1,4 @@
-const {postNewAppointment, getAppointments, filterAppointments, updateAppointment} = require('../models/appModel');
+const {postNewAppointment, getAppointments, filterAppointments, updateAppointment, deleteAppointment} = require('../models/appModel');
 
 class appController {
 
@@ -75,6 +75,26 @@ class appController {
             next(error);
         }
     };
+
+    deleteAppointment = async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            const { id: user_id, role } = req.user || {};
+
+            const isAdmin = role === "admin";
+
+            const data = isAdmin ? { id } : { id, user_id };
+
+            const appointmentDelete = await deleteAppointment(data, isAdmin);
+    
+            res.status(200).json({
+                status: "success",
+                data: appointmentDelete
+            })
+        } catch (error) {
+            next(error);
+        }
+    }
 
 
 }

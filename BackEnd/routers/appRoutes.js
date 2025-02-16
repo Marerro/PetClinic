@@ -8,5 +8,6 @@ appRouter.post('/appointment', authController.protect, appController.postNewAppo
 appRouter.get('/appointment', appController.getAllAppointments);
 appRouter.get('/', appController.filterAppointments);
 appRouter.patch('/:id', authController.protect, appController.updateExistingAppointment);
+appRouter.delete('/:id', authController.protect, appController.deleteAppointment);
 
 module.exports = appRouter;
