@@ -9,14 +9,14 @@ const validate = (req, res, next) => {
             const errorMessages = errors
                 .array()
                 .map((error) => error.msg)
-                .join("; "); // Joining errors into a single string
+                .join("; ");
 
-            throw new AppError(errorMessages, 400); // Throwing error with formatted messages
+            throw new AppError(errorMessages, 400); 
         }
 
-        next(); // If no errors, proceed to the next middleware
+        next(); 
     } catch (error) {
-        next(error); // Passing error to the error-handling middleware
+        next(error); 
     }
 };
 

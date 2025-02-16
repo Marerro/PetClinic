@@ -16,6 +16,7 @@ const UserContextProvider = ({ children }) => {
             setUser(response.data);
         } catch (error) {
             setUser(null);
+            setError(error.response?.data.message || "An error occurred while fetching user data.");
         } finally {
             setLoading(false);
         }
