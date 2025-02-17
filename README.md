@@ -1,3 +1,6 @@
+RESULT:
+![image-alt](https://github.com/Marerro/PetClinic/blob/master/Screenshot%202025-02-17%20160900.png?raw=true)
+
 Sukurkite gyvūnų registracijos pas gydytoją sistemą. Turi veikti FRONT ir BACK dalys.
 
 Funkcionalumas:
