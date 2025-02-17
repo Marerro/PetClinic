@@ -2,8 +2,8 @@ const { sql } = require("../dbConnection");
 
 exports.postNewAppointment = async (user) => {
   const result = await sql`
-  INSERT INTO appointments (petname, petowner, description, date, time, user_id)
-  VALUES (${user.petname}, ${user.petowner}, ${user.description}, ${user.date}, ${user.time}, ${user.user_id})
+  INSERT INTO appointments (petname, petowner, description, date, time, user_id, status)
+  VALUES (${user.petname}, ${user.petowner}, ${user.description}, ${user.date}, ${user.time}, ${user.user_id}, ${user.status})
   RETURNING *;
   `;
 
@@ -78,4 +78,14 @@ exports.deleteAppointment = async (updatedData, isAdmin = false) => {
       return appointment[0];
   }
 };
+
+exports.approveAppointmentById = async (id, status) => {
+  const response = await sql`
+  UPDATE appointments
+  set status = ${status}
+  WHERE id = ${id}
+  RETURNING *;
+  `
+  return response[0];
+}
 

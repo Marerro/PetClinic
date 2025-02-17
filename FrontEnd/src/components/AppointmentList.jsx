@@ -3,10 +3,14 @@ import AppointmentContext from "../context/AppointmentContext";
 import EditAppointmentModal from "./EditAppointmentModal";
 import SearchBar from "./SearchBar";
 import UserContext from "../context/UserContext";
-import {deleteAppointment} from "../helpers/appointments"
+import {
+  deleteAppointment,
+  editAppointmentStatus,
+} from "../helpers/appointments";
 
 function AppointmentList() {
-  const { appointments, setAppointments } = useContext(AppointmentContext);
+  const { appointments, setAppointments, error, setError } =
+    useContext(AppointmentContext);
   const { user, loading } = useContext(UserContext);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [filteredAppointments, setFilteredAppointments] = useState([]);
@@ -22,60 +26,86 @@ function AppointmentList() {
     return <p className="text-center">Loading...</p>;
   }
 
-  if(!user) {
-    return <p>Please log in</p>
+  if (!user) {
+    return <p>Please log in</p>;
   }
 
-  const isAdmin = user.roles.includes("admin"); 
-  const loggedInUser = user.id
+  const isAdmin = user.roles.includes("admin");
+  const loggedInUser = user.id;
 
   const handleDelete = async (id) => {
     try {
       const response = await deleteAppointment(id);
-      if(response) {
-        setAppointments(prevAppointments => prevAppointments.filter(app => app.id !== id))
+      if (response) {
+        setAppointments((prevAppointments) =>
+          prevAppointments.filter((app) => app.id !== id)
+        );
       }
     } catch (error) {
       console.error("delete failed", error);
     }
-  }
+  };
+
+  console.log(appointments);
+
+  const handleStatus = async (id, status) => {
+    try {
+      console.log("Do i receive id and status?", id, status);
+      const response = await editAppointmentStatus(id, status);
+      if (response) {
+        setAppointments((prevAppointments) =>
+          prevAppointments.map((appointment) =>
+            appointment.id === id
+              ? { ...appointment, status: status }
+              : appointment
+          )
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const renderAppointments = () => {
     const userAppointments = isAdmin
-    ? appointments
-    : appointments.filter((appointment) => appointment.user_id === loggedInUser);
-  
-    const displayedAppointments = query ? filteredAppointments : userAppointments;
-  
+      ? appointments
+      : appointments.filter(
+          (appointment) => appointment.user_id === loggedInUser
+        );
+
+    const displayedAppointments = query
+      ? filteredAppointments
+      : userAppointments;
+
     return displayedAppointments.map((appointment, index, arr) => {
-      const { id, petname, petowner, description, date, time } = appointment;
-  
+      const { id, petname, petowner, description, date, time, status } = appointment;
+
       return (
         <div
           key={id}
-          className={`card max-w-[67rem] mx-auto mt-5 h-auto flex justify-between border-b-2 border-indigo-500 ${
+          className={`card max-w-[67rem] border-b-2  border-indigo-500 mx-auto mt-5 h-auto flex justify-between  ${
             index === arr.length - 1 ? "border-none" : ""
           } `}
         >
           {/* left side */}
-          <div className="flex items-center gap-4 w-4/6">
-          <div className="flex flex-col gap-3">
-          <button
-              className="px-5 py-1 bg-blue-500 text-white rounded"
-              onClick={() => setSelectedAppointment(appointment)}
-            >
-              Edit
-            </button>
+          <div className="flex items-center gap-4 w-4/6 pb-3">
+            <div className="flex flex-col gap-3">
+              <button
+                className="px-5 py-1 bg-blue-500 text-white rounded"
+                onClick={() => setSelectedAppointment(appointment)}
+              >
+                Edit
+              </button>
 
-            <button
-            className="px-5 py-1 bg-blue-500 text-white rounded"
-            onClick={() => handleDelete(id)}
-            >
-              Delete
-            </button>
-          </div>
-  
-            <div className="flex flex-col w-full">
+              <button
+                className="px-5 py-1 bg-blue-500 text-white rounded"
+                onClick={() => handleDelete(id)}
+              >
+                Delete
+              </button>
+            </div>
+
+            <div className="flex flex-col w-full pb-3">
               <p className="text-violet-800 text-2xl font-bold">{petname}</p>
               <p className="text-lg">
                 <span className="text-gray-600">Owner: </span> {petowner}
@@ -83,10 +113,28 @@ function AppointmentList() {
               <p className="text-md text-gray-700">{description}</p>
             </div>
           </div>
-  
+
           {/* right side */}
-          <div className="w-2/6 text-right text-gray-700">
-            <p className="text-center">{date} {time}</p>
+          <div className="text-gray-700 flex flex-col items-end gap-1 ">
+            <p className="text-center">
+              {date} {time}
+            </p>
+            {isAdmin ? (
+              <div>
+                <p>Current status:{appointment.status}</p>
+              <select
+                value={appointment.status}
+                onChange={(e) => handleStatus(id, e.target.value)}
+                className="bg-white border border-gray-300 rounded-md px-4 py-2 w-[150px]"
+              >
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Declined">Declined</option>
+              </select>
+              </div>
+            ) : (
+              <span className="border border-gray-300 rounded-md px-4 py-2">{appointment.status}</span>
+            )}
           </div>
         </div>
       );

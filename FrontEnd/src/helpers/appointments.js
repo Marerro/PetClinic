@@ -15,3 +15,10 @@ export const deleteAppointment = async (id) => {
     });
     return response.data;
 }
+
+export const editAppointmentStatus = async (id, status) => {
+    const response = await axios.patch(`${appAPI}/status/${id}`, {status}, {
+        withCredentials: true
+    })
+    return response.data;
+}

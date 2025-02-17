@@ -8,6 +8,7 @@ class appController {
           const newAppointment = {
             ...req.body,
             user_id: req.user.id,
+            status: "Pending"
           };
       
           const response = await postNewAppointment(newAppointment);
@@ -91,6 +92,32 @@ class appController {
                 status: "success",
                 data: appointmentDelete
             })
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    approveAppointment = async (req, res, next) => {
+        try {
+            const {id} = req.params;
+            const {status} = req.body;
+            const {roles} = req.user || {};
+
+            const isAdmin = roles === "admin";
+
+            if(isAdmin) {
+                const response = await updateAppointment({id, status}, isAdmin);
+
+                res.status(200).json({
+                    status: "successfully updated status!",
+                    data: response
+                })
+            } else {
+                res.status(403).json({
+                    status: "error",
+                    message: "You are not authorized to perform this action"
+                })
+            }
         } catch (error) {
             next(error);
         }
