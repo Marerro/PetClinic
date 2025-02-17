@@ -2,8 +2,8 @@ import axios from "axios";
 const appAPI = import.meta.env.VITE_APP_API;
 const VITE_USERS_API = import.meta.env.VITE_USERS_API
 
-export const getAllAppointments = async () => {
-    const response = await axios.get(`${appAPI}/appointment`)
+export const getAllAppointments = async (limit, page) => {
+    const response = await axios.get(`${appAPI}/appointment?limit=${limit}&page=${page}`)
     return response.data;
 }
 

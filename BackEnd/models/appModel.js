@@ -10,12 +10,24 @@ exports.postNewAppointment = async (user) => {
   return result[0];
 };
 
-exports.getAppointments = () => {
-  const allAppointments = sql`
+exports.getAppointments = async (limit, offset) => {
+
+  const allAppointments = await sql`
     SELECT *
     FROM appointments
+    ${
+      limit !==undefined && offset !== undefined
+      ? sql`LIMIT ${limit} OFFSET ${offset}`
+      : sql``
+    }
     `;
-  return allAppointments;
+
+    const [total] = await sql`
+    SELECT COUNT(*)
+    FROM appointments
+    `
+    return {allAppointments, total};
+
 };
 
 exports.filterAppointments = async (id, query, sort, order, isAdmin = false)=> {

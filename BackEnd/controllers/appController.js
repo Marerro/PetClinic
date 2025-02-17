@@ -28,12 +28,30 @@ class appController {
 
   getAllAppointments = async (req, res, next) => {
     try {
-      const response = await getAppointments();
 
-      res.status(200).json({
-        status: "success",
-        data: response,
-      });
+        const filterAppointments = req.query
+
+        let page = parseInt(filterAppointments.page)
+        let limit = parseInt(filterAppointments.limit) 
+
+        if(!page || !limit) {
+            const response = await getAppointments();
+
+            return res.status(200).json({
+                status: "success",
+                data: response
+            })
+        }
+
+        const offset = (page - 1) * limit
+
+        const response = await getAppointments(limit, offset);
+
+        return res.status(200).json({
+            status: "success",
+            page: page,
+            data: response,
+        })
     } catch (error) {
       next(error);
     }

@@ -9,7 +9,7 @@ import {
 } from "../helpers/appointments";
 
 function AppointmentList() {
-  const { appointments, setAppointments, error, setError } =
+  const { appointments, setAppointments, error, setError, page, setPage, totalPages } =
     useContext(AppointmentContext);
   const { user, loading } = useContext(UserContext);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
@@ -19,7 +19,7 @@ function AppointmentList() {
   const [order, setOrder] = useState("asc");
 
   if (!appointments || appointments.length === 0) {
-    return <p className="text-gray-500">No appointments available.</p>;
+    return <p className="text-gray-500 text-center">No appointments available.</p>;
   }
 
   if (loading) {
@@ -42,7 +42,7 @@ function AppointmentList() {
         );
       }
     } catch (error) {
-      console.error("delete failed", error);
+      console.log("delete failed", error);
     }
   };
 
@@ -65,6 +65,18 @@ function AppointmentList() {
     }
   };
 
+  const handleNextPage = () => {
+    if (page < totalPages) {
+        setPage(prevPage => prevPage + 1);
+    }
+};
+
+const handlePrevPage = () => {
+    if (page > 1) {
+        setPage(prevPage => prevPage - 1);
+    }
+};
+
   const renderAppointments = () => {
     const userAppointments = isAdmin
       ? appointments
@@ -83,7 +95,7 @@ function AppointmentList() {
         <div
           key={id}
           className={`card max-w-[67rem] border-b-2  border-indigo-500 mx-auto mt-5 h-auto flex justify-between  ${
-            index === arr.length - 1 ? "border-none" : ""
+            index === arr.length - 1 ? "border-none mb-[10vh]" : ""
           } `}
         >
           {/* left side */}
@@ -134,6 +146,7 @@ function AppointmentList() {
             ) : (
               <span className="border border-gray-300 rounded-md px-4 py-2">{appointment.status}</span>
             )}
+
           </div>
         </div>
       );
@@ -141,7 +154,7 @@ function AppointmentList() {
   };
 
   return (
-    <div>
+    <div className="pb-20">
       <SearchBar
         query={query}
         setQuery={setQuery}
@@ -154,6 +167,24 @@ function AppointmentList() {
       />
 
       {renderAppointments()}
+
+      <div className="flex justify-center items-center gap-4">
+        <button
+            disabled={page <= 1}
+            onClick={handlePrevPage}
+            className="p-1 w-[100px] border rounded-md bg-gray-300"
+        >
+            Previous
+        </button>
+
+        <button  
+            disabled={page >= totalPages} 
+            onClick={handleNextPage}
+            className="p-1 w-[100px] border rounded-md bg-gray-300"
+        >
+            Next
+        </button>
+    </div>
 
       {selectedAppointment && (
         <EditAppointmentModal
