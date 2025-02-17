@@ -91,6 +91,7 @@ const handlePrevPage = () => {
     return displayedAppointments.map((appointment, index, arr) => {
       const { id, petname, petowner, description, date, time, status } = appointment;
 
+
       return (
         <div
           key={id}

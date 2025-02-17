@@ -8,7 +8,7 @@
 	},
 	"item": [
 		{
-			"name": "Get data",
+			"name": "getAppointments",
 			"event": [
 				{
 					"listen": "test",
@@ -18,7 +18,8 @@
 							"    pm.response.to.have.status(200);",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -26,17 +27,26 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/info?id=1",
+					"raw": "http://localhost:3002/api/v1/appointments/appointment?limit=5&page=2",
+					"protocol": "http",
 					"host": [
-						"{{base_url}}"
+						"localhost"
 					],
+					"port": "3002",
 					"path": [
-						"info"
+						"api",
+						"v1",
+						"appointments",
+						"appointment"
 					],
 					"query": [
 						{
-							"key": "id",
-							"value": "1"
+							"key": "limit",
+							"value": "5"
+						},
+						{
+							"key": "page",
+							"value": "2"
 						}
 					]
 				},
@@ -45,7 +55,7 @@
 			"response": []
 		},
 		{
-			"name": "Get data Copy",
+			"name": "FilterAppointments",
 			"event": [
 				{
 					"listen": "test",
@@ -55,7 +65,8 @@
 							"    pm.response.to.have.status(200);",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -63,17 +74,29 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/info?id=1",
+					"raw": "http://localhost:3002/api/v1/appointments?search=s&sort=date&order=DESC",
+					"protocol": "http",
 					"host": [
-						"{{base_url}}"
+						"localhost"
 					],
+					"port": "3002",
 					"path": [
-						"info"
+						"api",
+						"v1",
+						"appointments"
 					],
 					"query": [
 						{
-							"key": "id",
-							"value": "1"
+							"key": "search",
+							"value": "s"
+						},
+						{
+							"key": "sort",
+							"value": "date"
+						},
+						{
+							"key": "order",
+							"value": "DESC"
 						}
 					]
 				},
@@ -92,26 +115,35 @@
 							"    pm.response.to.have.status(200);",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "{{base_url}}/info?id=1",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"info"
-					],
-					"query": [
-						{
-							"key": "id",
-							"value": "1"
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3002/api/v1/users/me",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"me"
 					]
 				},
 				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
@@ -129,7 +161,8 @@
 							"    pm.response.to.have.status(200);",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -137,18 +170,17 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/info?id=1",
+					"raw": "http://localhost:3002/api/v1/users/logout",
+					"protocol": "http",
 					"host": [
-						"{{base_url}}"
+						"localhost"
 					],
+					"port": "3002",
 					"path": [
-						"info"
-					],
-					"query": [
-						{
-							"key": "id",
-							"value": "1"
-						}
+						"api",
+						"v1",
+						"users",
+						"logout"
 					]
 				},
 				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
@@ -177,7 +209,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"petname\": \"Squiggles\",\n    \"petowner\": \"Madisyn Roope\",\n    \"description\": \"Squiggles is due for her annual checkup and vaccinations\",\n    \"date\": \"2022-11-30\",\n    \"time\": \"11:32\"\n\n}",
+					"raw": "{\n\t\"petname\": \"Squiggles\",\n    \"petowner\": \"Madisyn Roope\",\n    \"description\": \"Squiggles is due for her annual checkup and vaccinations\",\n    \"date\": \"2022-11-30\",\n    \"time\": \"11:32\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -224,7 +256,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"petname\": \"Squiggles\",\n    \"petowner\": \"Madisyn Roope\",\n    \"description\": \"Squiggles is due for her annual checkup and vaccinations\",\n    \"date\": \"2022-11-30\",\n    \"time\": \"11:32\"\n\n}",
+					"raw": "{\n    \"email\": \"emailas4@gmail.com\",\n    \"name\": \"test\",\n    \"password\": \"Slaptazodis123!\",\n    \"passwordconfirm\": \"Slaptazodis123!\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -232,7 +264,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3002/api/v1/appointments/appointment",
+					"raw": "http://localhost:3002/api/v1/users/signup",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -241,8 +273,8 @@
 					"path": [
 						"api",
 						"v1",
-						"appointments",
-						"appointment"
+						"users",
+						"signup"
 					]
 				},
 				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
@@ -271,7 +303,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"petname\": \"Reksas\",\n    \"petowner\": \"Johny\",\n    \"description\": \"Pain in leg\",\n    \"date\": \"2022-02-03\",\n    \"time\": \"11:30\"\n\n}",
+					"raw": "{\n    \"email\": \"emailas4@gmail.com\",\n    \"password\": \"Slaptazodis123!\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -279,7 +311,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3002/api/v1/appointments/appointment",
+					"raw": "http://localhost:3002/api/v1/users/login",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -288,8 +320,8 @@
 					"path": [
 						"api",
 						"v1",
-						"appointments",
-						"appointment"
+						"users",
+						"login"
 					]
 				},
 				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
@@ -308,16 +340,17 @@
 							"});",
 							""
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
 			"request": {
-				"method": "PUT",
+				"method": "PATCH",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+					"raw": "{\n\t\"description\": \"Routine check\",\n    \"date\": \"2022-03-13\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -325,18 +358,17 @@
 					}
 				},
 				"url": {
-					"raw": "{{base_url}}/info?id=1",
+					"raw": "http://localhost:3002/api/v1/appointments/15",
+					"protocol": "http",
 					"host": [
-						"{{base_url}}"
+						"localhost"
 					],
+					"port": "3002",
 					"path": [
-						"info"
-					],
-					"query": [
-						{
-							"key": "id",
-							"value": "1"
-						}
+						"api",
+						"v1",
+						"appointments",
+						"15"
 					]
 				},
 				"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
@@ -355,16 +387,17 @@
 							"});",
 							""
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
 			"request": {
-				"method": "PUT",
+				"method": "PATCH",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+					"raw": "{\n\t\"status\": \"success\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -372,18 +405,18 @@
 					}
 				},
 				"url": {
-					"raw": "{{base_url}}/info?id=1",
+					"raw": "http://localhost:3002/api/v1/appointments/status/17",
+					"protocol": "http",
 					"host": [
-						"{{base_url}}"
+						"localhost"
 					],
+					"port": "3002",
 					"path": [
-						"info"
-					],
-					"query": [
-						{
-							"key": "id",
-							"value": "1"
-						}
+						"api",
+						"v1",
+						"appointments",
+						"status",
+						"17"
 					]
 				},
 				"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
@@ -402,7 +435,8 @@
 							"});",
 							""
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -419,18 +453,17 @@
 					}
 				},
 				"url": {
-					"raw": "{{base_url}}/info?id=1",
+					"raw": "http://localhost:3002/api/v1/appointments/26",
+					"protocol": "http",
 					"host": [
-						"{{base_url}}"
+						"localhost"
 					],
+					"port": "3002",
 					"path": [
-						"info"
-					],
-					"query": [
-						{
-							"key": "id",
-							"value": "1"
-						}
+						"api",
+						"v1",
+						"appointments",
+						"26"
 					]
 				},
 				"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
