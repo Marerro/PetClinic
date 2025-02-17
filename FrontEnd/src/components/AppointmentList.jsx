@@ -50,7 +50,6 @@ function AppointmentList() {
 
   const handleStatus = async (id, status) => {
     try {
-      console.log("Do i receive id and status?", id, status);
       const response = await editAppointmentStatus(id, status);
       if (response) {
         setAppointments((prevAppointments) =>
@@ -146,6 +145,7 @@ function AppointmentList() {
       <SearchBar
         query={query}
         setQuery={setQuery}
+        filteredAppointments={filteredAppointments}
         setFilteredAppointments={setFilteredAppointments}
         select={select}
         setSelected={setSelected}

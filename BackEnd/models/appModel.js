@@ -18,7 +18,7 @@ exports.getAppointments = () => {
   return allAppointments;
 };
 
-exports.filterAppointments = (query, sort, order) => {
+exports.filterAppointments = async (id, query, sort, order, isAdmin = false)=> {
   const sortColumns = ["petname", "date", "petowner"];
   const orderColumns = ["ASC", "DESC"];
 
@@ -26,15 +26,30 @@ exports.filterAppointments = (query, sort, order) => {
 
   const sortedOrder = orderColumns.includes(order) ? order : "DESC";
 
-  const filterAppointments = sql`
-    SELECT id, petname, petowner, description, date, time
-    FROM appointments
-    WHERE petname ILIKE ${query + "%"}
-    OR petowner ILIKE ${query + "%"}
-    OR description ILIKE ${query + "%"}
-    ORDER BY ${sql.unsafe(sorted)} ${sql.unsafe(sortedOrder)}
-  `;
-  return filterAppointments;
+    if(isAdmin) {
+      const filterAppointmentsByAdmin = await sql`
+      SELECT id, petname, petowner, description, date, time, user_id
+      FROM appointments
+      WHERE petname ILIKE ${query + "%"}
+      OR petowner ILIKE ${query + "%"}
+      OR description ILIKE ${query + "%"}
+      ORDER BY ${sql.unsafe(sorted)} ${sql.unsafe(sortedOrder)}
+    `;
+    return filterAppointmentsByAdmin
+    } else {
+      const filterAppointments = await sql`
+      SELECT id, petname, petowner, description, date, time, user_id
+      FROM appointments
+      WHERE (
+      petname ILIKE ${query + "%"}
+      OR PETOWNER ILIKE ${query + "%"}
+      OR description ILIKE ${query + "%"}
+      )
+      AND user_id = ${id}
+      `
+      return filterAppointments
+    }
+
 };
 
 exports.updateAppointment = async (updatedAppointment, isAdmin = false) => {

@@ -6,7 +6,7 @@ const appRouter = router();
 
 appRouter.post('/appointment', authController.protect, appController.postNewAppointment);
 appRouter.get('/appointment', appController.getAllAppointments);
-appRouter.get('/', appController.filterAppointments);
+appRouter.get('/', authController.protect, appController.filterAppointments);
 appRouter.patch('/:id', authController.protect, appController.updateExistingAppointment);
 appRouter.patch('/status/:id', authController.protect, appController.approveAppointment)
 appRouter.delete('/:id', authController.protect, appController.deleteAppointment);

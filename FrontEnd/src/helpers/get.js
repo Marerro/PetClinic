@@ -8,7 +8,9 @@ export const getAllAppointments = async () => {
 }
 
 export const getFilteredAppointments = async (data, sort, order) => {
-    const response = await axios.get(`${appAPI}/?search=${data}&sort=${sort}&order=${order}`);    
+    const response = await axios.get(`${appAPI}/?search=${data}&sort=${sort}&order=${order}`, {
+        withCredentials: true
+    });    
     console.log(response);
     return response.data;
 }

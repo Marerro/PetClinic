@@ -1,129 +1,138 @@
-const {postNewAppointment, getAppointments, filterAppointments, updateAppointment, deleteAppointment} = require('../models/appModel');
+const {
+  postNewAppointment,
+  getAppointments,
+  filterAppointments,
+  updateAppointment,
+  deleteAppointment,
+} = require("../models/appModel");
 
 class appController {
-
-    postNewAppointment = async (req, res, next) => {
-        try { 
-      
-          const newAppointment = {
-            ...req.body,
-            user_id: req.user.id,
-            status: "Pending"
-          };
-      
-          const response = await postNewAppointment(newAppointment);
-      
-          res.status(200).json({
-            status: "success",
-            data: response,
-          });
-        } catch (error) {
-          next(error);
-        }
+  postNewAppointment = async (req, res, next) => {
+    try {
+      const newAppointment = {
+        ...req.body,
+        user_id: req.user.id,
+        status: "Pending",
       };
 
-    getAllAppointments = async (req, res, next) => {
-        try {
-            const response = await getAppointments();
+      const response = await postNewAppointment(newAppointment);
 
-            res.status(200).json({
-                status: "success",
-                data: response
-            })
-        } catch (error) {
-            next(error);
-        }
+      res.status(200).json({
+        status: "success",
+        data: response,
+      });
+    } catch (error) {
+      next(error);
     }
+  };
 
-    filterAppointments = async (req, res, next) => {
-        try {
-            const { search, sort, order } = req.query
+  getAllAppointments = async (req, res, next) => {
+    try {
+      const response = await getAppointments();
 
-            console.log(sort)
-
-            const response = await filterAppointments(search, sort, order);
-
-            console.log(response);
-
-            res.status(200).json({
-                status: "success",  
-                data: response,
-            })
-        } catch (error) {
-            next(error);
-        }
+      res.status(200).json({
+        status: "success",
+        data: response,
+      });
+    } catch (error) {
+      next(error);
     }
+  };
 
-    updateExistingAppointment = async (req, res, next) => {
-        const { id } = req.params;
-        const { id: user_id, role } = req.user || {};  
-    
-        try {
-            const isAdmin = role === "admin";
-    
-            const updatedData = isAdmin
-                ? { ...req.body, id }
-                : { ...req.body, id, user_id };
-    
-    
-            const appointment = await updateAppointment(updatedData, isAdmin);
-    
-            res.status(200).json({
-                status: "success",
-                data: appointment,
-            });
-        } catch (error) {
-            next(error);
-        }
-    };
+  filterAppointments = async (req, res, next) => {
+    try {
+      const { search, sort, order } = req.query;
+      const { id: user_id, roles } = req.user || {};
 
-    deleteAppointment = async (req, res, next) => {
-        try {
-            const { id } = req.params;
-            const { id: user_id, role } = req.user || {};
+      const isAdmin = roles === "admin";
 
-            const isAdmin = role === "admin";
 
-            const data = isAdmin ? { id } : { id, user_id };
+      const response = await filterAppointments(
+        user_id,
+        search,
+        sort,
+        order,
+        isAdmin
+      );
 
-            const appointmentDelete = await deleteAppointment(data, isAdmin);
-    
-            res.status(200).json({
-                status: "success",
-                data: appointmentDelete
-            })
-        } catch (error) {
-            next(error);
-        }
+      console.log(response);
+
+      res.status(200).json({
+        status: "success",
+        data: response,
+      });
+    } catch (error) {
+      next(error);
     }
+  };
 
-    approveAppointment = async (req, res, next) => {
-        try {
-            const {id} = req.params;
-            const {status} = req.body;
-            const {roles} = req.user || {};
+  updateExistingAppointment = async (req, res, next) => {
+    const { id } = req.params;
+    const { id: user_id, roles } = req.user || {};
 
-            const isAdmin = roles === "admin";
+    try {
+      const isAdmin = roles === "admin";
 
-            if(isAdmin) {
-                const response = await updateAppointment({id, status}, isAdmin);
+      const updatedData = isAdmin
+        ? { ...req.body, id }
+        : { ...req.body, id, user_id };
 
-                res.status(200).json({
-                    status: "successfully updated status!",
-                    data: response
-                })
-            } else {
-                res.status(403).json({
-                    status: "error",
-                    message: "You are not authorized to perform this action"
-                })
-            }
-        } catch (error) {
-            next(error);
-        }
+      const appointment = await updateAppointment(updatedData, isAdmin);
+
+      res.status(200).json({
+        status: "success",
+        data: appointment,
+      });
+    } catch (error) {
+      next(error);
     }
+  };
 
+  deleteAppointment = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { id: user_id, roles } = req.user || {};
 
+      const isAdmin = roles === "admin";
+
+      const data = isAdmin ? { id } : { id, user_id };
+
+      const appointmentDelete = await deleteAppointment(data, isAdmin);
+
+      res.status(200).json({
+        status: "success",
+        data: appointmentDelete,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  approveAppointment = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+      const { roles } = req.user || {};
+
+      const isAdmin = roles === "admin";
+
+      if (isAdmin) {
+        const response = await updateAppointment({ id, status }, isAdmin);
+
+        res.status(200).json({
+          status: "successfully updated status!",
+          data: response,
+        });
+      } else {
+        res.status(403).json({
+          status: "error",
+          message: "You are not authorized to perform this action",
+        });
+      }
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
-module.exports = new appController();   
+module.exports = new appController();
